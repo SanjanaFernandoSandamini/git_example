@@ -1,0 +1,30 @@
+# File: .github/workflows/ci.yml
+name: Run Tests
+
+on:
+  push:
+    branches: [main]  # or your preferred branch
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    container:
+      image: python:3.9-slim-buster
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          apt-get update && apt-get install -y make
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: make test
